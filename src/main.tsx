@@ -11,12 +11,10 @@ import { HashRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HashRouter >
-      <Provider store={store}>
-        <MantineProvider>
-          <App />
-        </MantineProvider>
-      </Provider>
-    </HashRouter>
+    <Provider store={store}>
+      <MantineProvider>
+        <App />
+      </MantineProvider>
+    </Provider>
   </StrictMode>,
 )

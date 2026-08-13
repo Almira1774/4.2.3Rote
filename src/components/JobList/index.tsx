@@ -4,12 +4,12 @@ import { fetchVacancies } from '../../store/jobSlice';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { WatchVacancyButton } from '../WatchVacancyButton';
+import { useLoaderData, useParams } from 'react-router-dom';
 
 
 export const JobList: React.FC = () => {
-  const vacancies = useAppSelector((state) =>
-    state.jobs.jobs
-  );
+  const vacancies = useAppSelector(state=>state.jobs.jobs);
+  const {city} = useParams();
 
   const dispatch = useAppDispatch();
   const status = useAppSelector(state => state.jobs.status);
@@ -17,13 +17,10 @@ export const JobList: React.FC = () => {
   const company = useAppSelector(state => state.jobs.selectedCompany);
   const page = useAppSelector(state => state.jobs.currentPage);
   
-
-  
-
-  useEffect(() => {
-
-    dispatch(fetchVacancies())
-  }, [dispatch,  skills, company, page]);
+const filteredVacancies = vacancies.filter(vacansy=>vacansy.city===city)
+.filter(vacansy=>vacansy.skills===skills)
+.filter(vacansy=>vacansy.company_name===company)
+ 
 
   if (status === 'loading') {
     return (
@@ -55,7 +52,7 @@ export const JobList: React.FC = () => {
       mt='xl'
       maw={659}
     >
-      {vacancies.map(vacancy => {
+      {filteredVacancies.map(vacancy => {
         return (
           <JobCard key={vacancy.id} vacancy={vacancy}  >
             <WatchVacancyButton id={vacancy.id} />

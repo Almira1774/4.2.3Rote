@@ -1,6 +1,7 @@
 import { Divider, SimpleGrid } from "@mantine/core";
 import { Vacancies } from "../components/Vacancies";
 import { MainContainer } from "../components/MainContainer";
+import { Outlet } from "react-router-dom";
 
 const VacanciesPage = () => {
     return (
@@ -8,6 +9,7 @@ const VacanciesPage = () => {
             <Vacancies />
             <Divider color="gray.2" size="xs"
             />
+            <Outlet></Outlet>
             <MainContainer />
         </SimpleGrid>
     )
