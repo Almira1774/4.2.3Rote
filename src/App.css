@@ -1,0 +1,14 @@
+.app {
+    display: flex;
+    flex-wrap: nowrap;
+
+}
+
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+  
+    max-height: 317px;
+  width: 303px;
+}
+
