@@ -12,15 +12,21 @@ export const JobList: React.FC = () => {
   const {city} = useParams();
 
   const dispatch = useAppDispatch();
+  const backendCity = city==="petersburg"? "Санкт-Петербург" : " Москва"
   const status = useAppSelector(state => state.jobs.status);
   const skills = useAppSelector(state => state.jobs.selectedSkills);
   const company = useAppSelector(state => state.jobs.selectedCompany);
-  const page = useAppSelector(state => state.jobs.currentPage);
-  
-const filteredVacancies = vacancies.filter(vacansy=>vacansy.city===city)
-.filter(vacansy=>vacansy.skills===skills)
-.filter(vacansy=>vacansy.company_name===company)
- 
+const currentSkills = skills || []; // Гарантируем TypeScript, что это массив, даже если пришел undefined
+
+const filteredVacancies = vacancies
+  .filter(vacancy => vacancy.city === backendCity)
+  // Проверяем, что у вакансии есть хотя бы один навык из выбранных пользователем
+  .filter(vacancy => 
+    currentSkills.length === 0 || 
+    (vacancy.skills && vacancy.skills.some(skill => currentSkills.includes(skill)))
+  )
+  .filter(vacancy => !company || vacancy.company_name === company);
+
 
   if (status === 'loading') {
     return (
@@ -33,7 +39,7 @@ const filteredVacancies = vacancies.filter(vacansy=>vacansy.city===city)
       </Stack>
     )
   }
-  if (vacancies.length === 0) {
+  if (filteredVacancies.length === 0) {
     return (
     <Stack
         gap="md"

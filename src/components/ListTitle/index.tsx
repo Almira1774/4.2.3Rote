@@ -1,7 +1,7 @@
 import { Tabs } from '@mantine/core';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../store/hooks';
-import { fetchVacancies } from '../../store/jobSlice';
+import { fetchVacancies,} from '../../store/jobSlice';
+import {store} from '../../store';
 
 
 const ListTitle: React.FC = () => {
@@ -31,12 +31,14 @@ const ListTitle: React.FC = () => {
         </Tabs>
     );
 }
-const cityLoader = async () => {
+const cityLoader = async ({params}:{params:any}) => {
+const city = params.city || 'moscow';
+const backendCity = city==='petersburg'? 'Санкт-Петербург' :"Москва"
+   await store.dispatch(fetchVacancies(backendCity));
+const data = store.getState();
+const vacancies = data.jobs.jobs
 
-    const dispatch = useAppDispatch();
-    const vacancies = await dispatch(fetchVacancies());
-
-    if (!vacancies) {
+    if (!vacancies || vacancies.length===0) {
         throw new Response("Вакансии для этого города не найдены",
             {
                 status: 404,

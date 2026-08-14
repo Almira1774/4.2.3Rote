@@ -47,7 +47,7 @@ const myInitialState: JobSliceType = {
 }
 
 
-export const fetchVacancies = createAsyncThunk('jobs/fetchVacancies', async (_, { getState, rejectWithValue }) => {
+export const fetchVacancies = createAsyncThunk('jobs/fetchVacancies', async (city: string , { getState, rejectWithValue }) => {
     const state = getState() as { jobs: typeof myInitialState };
     const skills = state.jobs.selectedSkills.join(',');
     const search = state.jobs.selectedCompany.trim();
@@ -56,6 +56,9 @@ export const fetchVacancies = createAsyncThunk('jobs/fetchVacancies', async (_, 
     let url = 'https://kata-jobs.onrender.com/api/jobs';
 
     try {
+        if(city){
+            queryParams.push(`city=${city}`)
+        }
         
         if (skills.length > 0) {
             queryParams.push(`skills=${skills}`)

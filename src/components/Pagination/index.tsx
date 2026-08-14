@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { changePage } from '../../store/jobSlice';
 import type React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
 
 
 export const Pagination_: React.FC = () => {
@@ -12,13 +11,7 @@ export const Pagination_: React.FC = () => {
   const vacanciesPerPage = useAppSelector(state => state.jobs.totalPages);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-const pageParams = new URLSearchParams(searchParams);
-const page = pageParams.get('page')
-if(page){
-dispatch(changePage(Number(page)))
-}
-  },[])
+
 
   const hanleChange = (value: number) => {
     dispatch(changePage(value))
