@@ -1,58 +1,55 @@
 import { Button, Group, Input, Pill, SimpleGrid } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector, } from '../../store/hooks';
-import { addTagBySkills, removeTagBySkills } from '../../store/jobSlice';
+import { useState } from 'react';
 import { PlusIcon } from '@phosphor-icons/react';
 import { useSearchParams } from 'react-router-dom';
 
 
 export const InputSkills: React.FC = () => {
 
-    const tags = useAppSelector(state => state.jobs.selectedSkills)
-    const dispatch = useAppDispatch();
-    const [inputValue, setInputValue] = useState('');
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    useEffect(() => {
-        const paramsFromUrl = searchParams.get('skills');
-        const skillsArray = paramsFromUrl?.split(',')
-        if (skillsArray) {
-            skillsArray.forEach(skill => dispatch(addTagBySkills(skill)))
+    const [inputValue, setInputValue] = useState('')
 
+    const [skillTags, setSkillTags] = useState<string[]>(() => {
+        //делаем ленивую загрузку. В отличии от useEffect он загрузит данные 
+        //еще до загрузки страницы. Сработает лишь один раз
+        const skillsFromUrl = searchParams.get('skills')
+        if (skillsFromUrl) {
+            return skillsFromUrl.split(',')
         }
-    }, [])
+        return ['JavaScript', 'React', 'Redux', 'Python'];
+    });
 
 
     const handleClick = () => {
         const trimmed = inputValue.trim()//убираем пробелы
         if (trimmed !== '') {
-            dispatch(addTagBySkills(trimmed));//добавляем в стейт фильтров 
-            setInputValue('')
+            setInputValue('');
 
-            const updateTags = [...tags, trimmed]//массив с новым тегом
-            const params = new URLSearchParams(searchParams)//копия хранимых параметров
-            //добавляем по ключу теги строкой через запятую
-            params.set('skills', updateTags.join(','))
+            // Это чистый JavaScript-массив, он хранит самую актуальную информацию.
+            const newSkills = [...skillTags, trimmed];
+            // Экран обновится чуть позже (асинхронно), но React уже знает про изменения.
+            setSkillTags(newSkills)
+            const params = new URLSearchParams(searchParams)//копия хранимых параметров           
+            params.set('skills', newSkills.join(','))//добавляем актуальный список тегов
             setSearchParams(params);//сохраняем
         }
 
 
     }
-    const handleRemove = (value: string | '') => {
-        const tag = value || ''; //приводим к строке
-
-        dispatch(removeTagBySkills(tag))
-        //сщздаем копию параметров 
-        const params = new URLSearchParams(searchParams)
-        const tagToRemove = tags.filter(t => t !== tag);
-        if (tagToRemove.length > 0) {
-            params.set('skills', tagToRemove.join(','))
+    const handleRemove = (value: string) => {
+        const updatedTags = skillTags.filter(tag => tag !== value);
+        setSkillTags(updatedTags);
+        const params = new URLSearchParams(searchParams)//копия хранимых параметров   
+        if (updatedTags.length > 0) {
+            params.set('skills', updatedTags.join(','))//добавляем актуальный список тегов
         }
         else {
-            params.delete('skills')
-        }
-        setSearchParams(params)
+            params.delete('skills')//добавляем актуальный список тегов
 
+        }
+
+        setSearchParams(params);//сохраняем
     }
 
     return (
@@ -87,10 +84,10 @@ export const InputSkills: React.FC = () => {
 
 
                 </Group>
-                {tags.map((tag) => {
+                {skillTags.map((tag) => {
                     return (
                         <Pill mr={4}
-                        withRemoveButton onRemove={() => handleRemove(tag)} key={tag}>{tag}</Pill>
+                            withRemoveButton onRemove={() => handleRemove(tag)} key={tag}>{tag}</Pill>
                     )
 
                 })}
