@@ -1,26 +1,30 @@
 import { VacanciesPage } from './pages/VacanciesPage';
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route, RouterProvider, } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { SingleVacancy } from './pages/SingleVacancy/index';
+import { SingleVacancy, singleVacansyLoader } from './pages/SingleVacancy/index';
 import './App.css';
 import '@mantine/core/styles.css';
-import { ListTitle, cityLoader } from './components/ListTitle';
 import { ErrorPage } from './pages/ErrorPage';
-import { ListContainer } from './components/ListContainer';
+import { ListContainer, } from './components/ListContainer';
+import { JobList, } from './components/JobList';
+import { MainContainer, vacanciesLoader } from './components/MainContainer';
 //import { AboutMe } from './pages/AboutMePage';
 //import { NotFoundPage } from './pages/NotFoundPage';
 
 
 function App() {
-  const router = createBrowserRouter(
+  let router = createBrowserRouter(
     createRoutesFromElements(
 
-      <Route path='/' element={<Layout />} errorElement={<ErrorPage />} >
+      <Route path='/' element={<Layout />} errorElement={<ErrorPage />}  >
         <Route index element={<Navigate to="vacancies/moscow" replace={true} />} />
-        <Route path='vacancies/' element={<VacanciesPage />} >
-          <Route path=':city' element={<ListContainer />} loader={cityLoader} />
+        <Route path='vacancies' element={<VacanciesPage />} >
+          <Route path=':city' element={<MainContainer />} loader={vacanciesLoader} />
+          <Route path=':city/:id' element={<SingleVacancy />} loader={singleVacansyLoader} />
         </Route>
-        <Route path='vacancies/:id' element={<SingleVacancy />} />
+
+
+
         {/*<Route path='about' element={<AboutMe />} />*/}
         {/*<Route path='*' element={<NotFoundPage />} />*/}
       </Route>

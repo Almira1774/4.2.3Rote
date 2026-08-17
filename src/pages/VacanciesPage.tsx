@@ -10,7 +10,6 @@ const VacanciesPage = () => {
             <Divider color="gray.2" size="xs"
             />
             <Outlet></Outlet>
-            <MainContainer />
         </SimpleGrid>
     )
 };
