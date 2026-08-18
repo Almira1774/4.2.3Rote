@@ -41,14 +41,15 @@ export const vacanciesLoader = async ({ params, request }: { params: any; reques
 }
 
 export const MainContainer: React.FC = () => {
-    const data = useLoaderData() as {jobs:JobProps[]};
+    const data = useLoaderData() as { jobs: JobProps[]; pagination: { totalPages: number } } | undefined;
   const vacancies = data?.jobs || []
+  const totalPages = data?.pagination?.totalPages || 1
 
     return (
         <Grid gap={24}  >
             <Grid.Col span={{ base: 1, md: 1 }} />
             <Grid.Col span={{ base: 7, md: 3 }}><SelectByCity_SkillsContainer /></Grid.Col>
-            <Grid.Col span={{ base: 10, md: 7 }} ml={'auto'}><ListContainer vacancies = {vacancies}/></Grid.Col>
+            <Grid.Col span={{ base: 10, md: 7 }} ml={'auto'}><ListContainer vacancies = {vacancies} totalPages = {totalPages} /></Grid.Col>
             <Grid.Col span={{ base: 1, md: 1 }} />
         </Grid>
     )

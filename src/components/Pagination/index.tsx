@@ -1,30 +1,26 @@
 import { Group, Pagination } from '@mantine/core';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { changePage } from '../../store/jobSlice';
 import type React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 
-export const Pagination_: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const currentPage = useAppSelector(state => state.jobs.currentPage);
-  const vacanciesPerPage = useAppSelector(state => state.jobs.totalPages);
+export const Pagination_: React.FC<{ totalPages: number }> = ({ totalPages }) => {
+
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const currentPage = Number(searchParams.get('page')) || 1;
 
 
   const hanleChange = (value: number) => {
-    dispatch(changePage(value))
     const params = new URLSearchParams(searchParams);
-params.set('page', value.toString())
+    params.set('page', String(value))
     setSearchParams(params)
   }
 
   return (
-    <Pagination.Root total={vacanciesPerPage || 1}
+    <Pagination.Root total={totalPages || 1}
       radius="xs"
       value={currentPage}
-      onChange={ hanleChange}>
+      onChange={hanleChange}>
       <Group gap={5} justify="center" mb={82} >
         <Pagination.First />
         <Pagination.Previous />
