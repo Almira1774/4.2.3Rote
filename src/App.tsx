@@ -20,8 +20,9 @@ function App() {
         <Route index element={<Navigate to="vacancies/moscow" replace={true} />} />
         <Route path='vacancies' element={<VacanciesPage />} >
           <Route path=':city' element={<MainContainer />} loader={vacanciesLoader} />
-          <Route path=':city/:id' element={<SingleVacancy />} loader={singleVacansyLoader} />
+          
         </Route>
+        <Route path='vacancies/:city/:id' element={<SingleVacancy />} loader={singleVacansyLoader} />
 
 
 

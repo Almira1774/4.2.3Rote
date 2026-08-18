@@ -2,7 +2,6 @@ import { SimpleGrid } from '@mantine/core';
 import { ListTitle } from '../ListTitle';
 import { JobList } from '../JobList';
 import { Pagination_ } from '../Pagination';
-import { Outlet, useLoaderData } from 'react-router-dom';
 import type { JobProps } from '../../store/jobSlice';
 
 interface ListContainerProps {

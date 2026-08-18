@@ -5,12 +5,13 @@ import { Outlet } from "react-router-dom";
 
 const VacanciesPage = () => {
     return (
-        <SimpleGrid component='main' bg='hsla(220, 5%, 97%, 1)' >
-            <Vacancies />
+        <>
             <Divider color="gray.2" size="xs"
             />
             <Outlet></Outlet>
-        </SimpleGrid>
+        </>
+
+
     )
 };
 
