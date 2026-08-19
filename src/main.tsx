@@ -6,7 +6,7 @@ import './index.css'
 import App from './App.tsx'
 import { Provider } from 'react-redux'
 import { store } from './store/index.ts'
-import { MantineProvider } from '@mantine/core'
+import { MantineProvider } from '@mantine/core';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
