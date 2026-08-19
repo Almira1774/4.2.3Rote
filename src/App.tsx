@@ -19,9 +19,9 @@ function App() {
         <Route index element={<Navigate to="vacancies/moscow" replace={true} />} />
         <Route path='vacancies' element={<VacanciesPage />} >
           <Route path=':city' element={<MainContainer />} loader={vacanciesLoader} >
-          <Route index element={<ListContainer  />}/>          
+            <Route index element={<ListContainer />} />
           </Route>
-          
+
         </Route>
         <Route path='vacancies/:city/:id' element={<SingleVacancy />} loader={singleVacansyLoader} />
 
@@ -31,7 +31,11 @@ function App() {
         {/*<Route path='*' element={<NotFoundPage />} />*/}
       </Route>
 
-    )
+    ),
+    {
+      // Теперь роутер будет знать, что на продакшене сайт живет в папке /4.2.3Rote
+      basename: import.meta.env.PROD ? '/4.2.3Rote' : '/'
+    }
   )
   return (
     <>
