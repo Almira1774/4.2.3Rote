@@ -6,7 +6,6 @@ import './App.css';
 import '@mantine/core/styles.css';
 import { ErrorPage } from './pages/ErrorPage';
 import { ListContainer, } from './components/ListContainer';
-import { JobList, } from './components/JobList';
 import { MainContainer, vacanciesLoader } from './components/MainContainer';
 //import { AboutMe } from './pages/AboutMePage';
 //import { NotFoundPage } from './pages/NotFoundPage';
@@ -19,7 +18,9 @@ function App() {
       <Route path='/' element={<Layout />} errorElement={<ErrorPage />}  >
         <Route index element={<Navigate to="vacancies/moscow" replace={true} />} />
         <Route path='vacancies' element={<VacanciesPage />} >
-          <Route path=':city' element={<MainContainer />} loader={vacanciesLoader} />
+          <Route path=':city' element={<MainContainer />} loader={vacanciesLoader} >
+          <Route index element={<ListContainer  />}/>          
+          </Route>
           
         </Route>
         <Route path='vacancies/:city/:id' element={<SingleVacancy />} loader={singleVacansyLoader} />

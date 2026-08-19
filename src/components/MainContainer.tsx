@@ -1,8 +1,7 @@
-import { Grid } from "@mantine/core";
-import { ListContainer } from "./ListContainer";
+import { Flex, Grid, Loader, Text } from "@mantine/core";
 import { SelectByCity_SkillsContainer } from "./SelectByCity_SkillsContainer";
-import { useLoaderData } from "react-router-dom";
-import type { JobProps } from "../store/jobSlice";
+import { Await, Outlet, useLoaderData, } from "react-router-dom";
+import { Suspense } from "react";
 //лоадер запускается до создания компонентов.
 //поскольку хуки в виде useSearchParams исп.нельзя,берем данные из request
 //это просто легальный способ для лоадера узнать, какие фильтры сейчас
@@ -27,30 +26,60 @@ export const vacanciesLoader = async ({ params, request }: { params: any; reques
   if (skills) {
     queryParams.push(`skills=${skills}`);
   }
+  const jobsPromise = fetch(`https://kata-jobs.onrender.com/api/jobs?${queryParams.join('&')}`)
+    .then(res => {
+      if (!res.ok) {
+        throw new Response('Ошибка сервера', {
+          status: res.status,
+          statusText: res.statusText,
+        })
+      }
+      return res.json()
+    });
 
-  const res = await fetch(`https://kata-jobs.onrender.com/api/jobs?${queryParams.join('&')}`);
-
-  if (!res.ok) {
-    throw new Response('Ошибка сервера', {
-      status: res.status,
-      statusText: res.statusText,
-    })
+  return {
+    jobsData: jobsPromise,
   }
-  return res.json()
+
+
 
 }
 
 export const MainContainer: React.FC = () => {
-    const data = useLoaderData() as { jobs: JobProps[]; pagination: { totalPages: number } } | undefined;
-  const vacancies = data?.jobs || []
-  const totalPages = data?.pagination?.totalPages || 1
+  const data = useLoaderData() as { jobsData: Promise<any> };
 
-    return (
-        <Grid gap={24}  >
-            <Grid.Col span={{ base: 1, md: 1 }} />
-            <Grid.Col span={{ base: 7, md: 3 }}><SelectByCity_SkillsContainer /></Grid.Col>
-            <Grid.Col span={{ base: 10, md: 7 }} ml={'auto'}><ListContainer vacancies = {vacancies} totalPages = {totalPages} /></Grid.Col>
-            <Grid.Col span={{ base: 1, md: 1 }} />
-        </Grid>
-    )
+
+  return (
+    <Grid gap={24}  >
+      <Grid.Col span={{ base: 1, md: 1 }} />
+      <Grid.Col span={{ base: 7, md: 3 }}><SelectByCity_SkillsContainer /></Grid.Col>
+      <Grid.Col span={{ base: 10, md: 7 }} ml={'auto'}>
+        <Suspense fallback={
+          <Flex >
+            <Loader size='sm' h='50 px' mr={10} />
+            <Text component="h3" h='75vh'>Loading data...</Text>
+          </Flex>
+        }>
+          {/* Все, что снаружи саспенса, отрендерится сразу.
+          Компонент Await сам дождется выполнения промиса и отдаст результат внутрь функции */}
+          <Await resolve={data.jobsData}>
+            {(resolvedData) => {
+
+              const vacancies = resolvedData?.jobs || []
+              const totalPages = resolvedData?.pagination?.totalPages || 1
+              //  Как только данные приехали, плавно рендерим 
+              return <Outlet context={{ vacancies, totalPages }} />
+            }}
+
+          </Await>
+
+        </Suspense>
+      </Grid.Col>
+      <Grid.Col span={{ base: 1, md: 1 }} />
+    </Grid>
+  )
 }
+
+
+
+

@@ -7,7 +7,7 @@ const Layout = () => {
         <>
             <Box >
                 <Header />
-                <SimpleGrid component='main' bg='hsla(220, 5%, 97%, 1)' >
+                <SimpleGrid component='main' bg='hsla(220, 5%, 97%, 1)' mih='100vh'>
                     <Outlet ></Outlet>
                 </SimpleGrid>
             </Box >

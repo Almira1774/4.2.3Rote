@@ -3,14 +3,15 @@ import { ListTitle } from '../ListTitle';
 import { JobList } from '../JobList';
 import { Pagination_ } from '../Pagination';
 import type { JobProps } from '../../store/jobSlice';
+import { useOutletContext } from 'react-router-dom';
 
 interface ListContainerProps {
     vacancies: JobProps[]; // Указываем, что ждём массив вакансий
     totalPages: number; // Указываем, что ждём количество страниц
 }
 
-export const ListContainer: React.FC<ListContainerProps> = ({ vacancies, totalPages }) => {
-
+export const ListContainer: React.FC = () => {
+    const { vacancies, totalPages } = useOutletContext<ListContainerProps>()
 
     return (
 

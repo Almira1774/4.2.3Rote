@@ -15,12 +15,12 @@ const VacancyDescription: React.FC<DescriptionProps> = ({ description, about_com
                 withBorder bg='#FFFFFF'>
                 <Box mb="xs" >
                     <Text fw={600} size='lg' >Компания</Text>
-                    <Text >{description}</Text>
+                    <Text >{about_company}</Text>
                 </Box>
 
                 <Box mb="xs" >
                     <Text fw={600} size='lg'>О вакансии:</Text>
-                    <Text>{about_company}</Text>
+                    <Text>{description}</Text>
                 </Box>
             </Card>
         </>
