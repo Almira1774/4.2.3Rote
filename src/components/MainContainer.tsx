@@ -55,9 +55,11 @@ export const MainContainer: React.FC = () => {
       <Grid.Col span={{ base: 7, md: 3 }}><SelectByCity_SkillsContainer /></Grid.Col>
       <Grid.Col span={{ base: 10, md: 7 }} ml={'auto'}>
         <Suspense fallback={
-          <Flex >
-            <Loader size='sm' h='50 px' mr={10} />
-            <Text component="h3" h='75vh'>Loading data...</Text>
+          <Flex justify='center'>
+            <Flex >
+              <Loader size='sm' h='50 px' mr={10} />
+              <Text component="h3" h='75vh'>Loading data...</Text>
+            </Flex>
           </Flex>
         }>
           {/* Все, что снаружи саспенса, отрендерится сразу.
