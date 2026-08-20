@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
 import { JobCard } from '../JobCard';
-import { type JobProps } from '../../store/jobSlice';
+import { type JobProps } from '../JobCard/types';
 import { WatchVacancyButton } from '../WatchVacancyButton';
 
 type vacanciesProps={

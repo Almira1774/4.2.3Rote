@@ -44,53 +44,53 @@ const VacancyErrorFallback = () => (
 const SingleVacancy = () => {
 
 
-const data = useLoaderData() as { singleVacancy: Promise<any> };
-const vacancyPromise = data?.singleVacancy
+    const data = useLoaderData() as { singleVacancy: Promise<any> };
+    const vacancyPromise = data?.singleVacancy
 
 
-return (
-    <Grid className={styles.card}>
-        <Grid.Col span={{ base: 2 }}></Grid.Col>
-        <Grid.Col span={{ base: 8 }}>
-            <Suspense fallback={
-                <Flex justify='center'>
-                    <Flex>
-                        <Loader size='sm' h='50 px' mr={10} />
-                        <Text component="h3" h='75vh'>Loading data...</Text>
-                    </Flex>
+    return (
+        <Grid className={styles.card} >
+            <Grid.Col span={{ base: 2 }}></Grid.Col>
+            <Grid.Col span={{ base: 8 }}>
+                <Suspense fallback={
+                    <Flex justify='center'>
+                        <Flex>
+                            <Loader size='sm' h='50 px' mr={10} />
+                            <Text component="h3" h='75vh'>Loading data...</Text>
+                        </Flex>
 
-                </Flex>}>
-                <Await resolve={vacancyPromise} errorElement={<VacancyErrorFallback />}>
-                    {(resolveddata) => {
+                    </Flex>}>
+                    <Await resolve={vacancyPromise} errorElement={<VacancyErrorFallback />}>
+                        {(resolveddata) => {
 
-                        const vacancy = resolveddata?.job
-                        const description = vacancy?.description
-                        const about_company = vacancy.about_company
-                        if (!vacancy) {
+                            const vacancy = resolveddata?.job
+                            const description = vacancy?.description
+                            const about_company = vacancy.about_company
+                            if (!vacancy) {
+                                return (
+                                    <div className={styles.card}>
+                                        <h3>По вашему запросу ничего не найдено</h3>
+                                    </div>
+                                )
+                            }
+
                             return (
-                                <div className={styles.card}>
-                                    <h3>По вашему запросу ничего не найдено</h3>
-                                </div>
+                                <>
+                                    <JobCard vacancy={vacancy} ></JobCard>
+                                    <VacancyDescription description={description}
+                                        about_company={about_company}></VacancyDescription>
+                                </>
                             )
-                        }
+                        }}
 
-                        return (
-                            <>
-                                <JobCard vacancy={vacancy} ></JobCard>
-                                <VacancyDescription description={description}
-                                    about_company={about_company}></VacancyDescription>
-                            </>
-                        )
-                    }}
+                    </Await>
 
-                </Await>
+                </Suspense>
+            </Grid.Col>
+            <Grid.Col span={{ base: 1 }}></Grid.Col>
+        </Grid>
 
-            </Suspense>
-        </Grid.Col>
-        <Grid.Col span={{ base: 1 }}></Grid.Col>
-    </Grid>
-
-)
+    )
 };
 
 export { SingleVacancy };

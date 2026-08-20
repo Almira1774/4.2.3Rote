@@ -1,5 +1,5 @@
 import { Flex, Grid, Loader, Text } from "@mantine/core";
-import { SelectByCity_SkillsContainer } from "./SelectByCity_SkillsContainer";
+import { SelectByCity_SkillsContainer } from "../SelectByCity_SkillsContainer";
 import { Await, Outlet, useLoaderData, } from "react-router-dom";
 import { Suspense } from "react";
 //лоадер запускается до создания компонентов.

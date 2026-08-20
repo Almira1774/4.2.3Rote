@@ -1,5 +1,5 @@
 import { Card, Text, Group, Box, Stack } from '@mantine/core';
-import type { JobProps } from '../../store/jobSlice';
+import type { JobProps } from './types';
 import { Space } from '../Space';
 
 export type cardVacansyProps = {
