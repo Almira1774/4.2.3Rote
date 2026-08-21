@@ -13,6 +13,7 @@ export const JobCard = ({ vacancy, children, }: cardVacansyProps) => {
     return (
 
         <Card shadow="sm" padding={24}
+        
             withBorder bg='#FFFFFF' mb={24}
         >
             <Box mb="xs"  >
